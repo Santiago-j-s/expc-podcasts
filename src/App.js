@@ -3,6 +3,7 @@ import "./podcasts.css";
 import { podcasts as podcastsService } from "services/index";
 import { useEffect, useState } from "react";
 import Podcast from "components/Podcast/index";
+import Player from "components/Player/index";
 
 /** @typedef {import("services/index").Podcast} Podcast */
 /** @typedef {import("react").SetStateAction<Podcast[]>} SetStateActionPodcasts */
@@ -23,6 +24,7 @@ function App() {
       {podcasts.map((podcast, index) => (
         <Podcast podcast={podcast} index={index} key={podcast.title} />
       ))}
+      <Player />
     </div>
   );
 }
