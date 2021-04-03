@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+// @ts-check
+import "./podcasts.css";
+import { podcasts as podcastsService } from "services/index";
+import { useEffect, useState } from "react";
+import Podcast from "components/Podcast/index";
+
+/** @typedef {import("services/index").Podcast} Podcast */
+/** @typedef {import("react").SetStateAction<Podcast[]>} SetStateActionPodcasts */
+/** @typedef {import("react").Dispatch<SetStateActionPodcasts>} DispatchPodcasts */
 
 function App() {
+  /** @type {[Podcast[], DispatchPodcasts]} */
+  const [podcasts, setPodcasts] = useState([]);
+
+  useEffect(() => {
+    podcastsService.getAll().then((podcasts) => {
+      setPodcasts(podcasts);
+    });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {podcasts.map((podcast, index) => (
+        <Podcast podcast={podcast} index={index} key={podcast.title} />
+      ))}
     </div>
   );
 }
