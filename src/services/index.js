@@ -4,6 +4,7 @@ export const podcasts = { getAll };
 /**
  * @typedef {{
  *   title: string,
+ *   guid: string,
  *   description: string,
  *   date: any,
  *   artwork: string|null,

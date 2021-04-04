@@ -3,10 +3,19 @@ import PlayButton from "components/PlayButton/index";
 import "./style.css";
 
 /**
- * @param {{podcast: import("services/index").Podcast, index: number}} props
+ * @param {{podcast: import("services/index").Podcast, index: number, playPodcast: Function}} props
  */
-export default function Podcast({ index, podcast }) {
-  const { state, time, duration, artwork, date, title, description } = podcast;
+export default function Podcast({ index, podcast, playPodcast }) {
+  const {
+    state,
+    time,
+    duration,
+    artwork,
+    guid,
+    date,
+    title,
+    description,
+  } = podcast;
 
   const timeLeft = duration - time;
   const timeAngle = (time / duration) * 360;
@@ -14,7 +23,7 @@ export default function Podcast({ index, podcast }) {
   return (
     <div className="podcastCard" id={`podcast-${index}`}>
       <div className="podcastCard__artworkContainer">
-        <img className="podcast__artwork" src={artwork} alt="" />
+        <img className="podcastCard__artwork" src={artwork} alt="" />
       </div>
       <div className="podcastCard__container">
         <p className="podcastCard__date">{date}</p>
@@ -41,6 +50,7 @@ export default function Podcast({ index, podcast }) {
             <span className="ilo-button__label"> material docente </span>
           </button>
           <PlayButton
+            play={() => playPodcast(guid)}
             number={index}
             state={state}
             duration={duration}

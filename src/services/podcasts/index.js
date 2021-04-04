@@ -7,6 +7,7 @@ import { RSS_URL, PODCAST_STATE } from "constants/index";
  */
 function _extractPodcastInfo(item) {
   const title = item?.querySelector("title")?.textContent || "";
+  const guid = item?.querySelector("guid")?.textContent || "";
 
   const descriptionNode = htmlParse(
     item?.querySelector("description").textContent || ""
@@ -41,6 +42,7 @@ function _extractPodcastInfo(item) {
 
   return {
     title,
+    guid,
     description,
     date,
     artwork,
