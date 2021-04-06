@@ -5,7 +5,7 @@ export default function Playing() {
   return (
     <svg
       id="svgSound-playing0"
-      className="svgSound-playing"
+      className="svgSound-playing ilo-button-icon"
       height="24px"
       strokeWidth="4"
       viewBox="-12 -12 24 24"

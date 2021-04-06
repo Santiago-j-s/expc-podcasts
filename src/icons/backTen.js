@@ -1,4 +1,4 @@
-function SvgBackTen(props) {
+export default function SvgBackTen(props) {
   return (
     <svg
       width="1em"
@@ -15,5 +15,3 @@ function SvgBackTen(props) {
     </svg>
   );
 }
-
-export default SvgBackTen;

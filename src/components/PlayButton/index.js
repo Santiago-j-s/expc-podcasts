@@ -51,24 +51,31 @@ const Button = ({ number, ariaLabel, label, icon, onClick }) => (
  * }} props
  * @returns
  */
-export default function PlayButton(props) {
+export default function PlayButton({
+  play,
+  number,
+  state,
+  duration,
+  timeLeft,
+  timeAngle,
+}) {
   /** @typedef {{label: string, icon: JSX.Element, ariaLabel?: string}} ButtonProps */
 
   /** @type {Object<string, ButtonProps>} */
   const buttonProps = {
     [PODCAST_STATE.initial]: {
-      label: ` ${props.duration} minutos`,
+      label: ` ${duration} minutos`,
       icon: ICONS.initial(),
       ariaLabel: "play podcast",
     },
     [PODCAST_STATE.pause]: {
-      label: ` quedan ${props.timeLeft} minutos`,
-      icon: ICONS.pause(props.timeAngle, 24, 9.09),
+      label: ` quedan ${timeLeft} minutos`,
+      icon: ICONS.pause(timeAngle, 24, 9.09),
       ariaLabel: "play podcast",
     },
     [PODCAST_STATE.stopped]: {
-      label: ` quedan ${props.timeLeft} minutos`,
-      icon: ICONS.pause(props.timeAngle, 24, 9.09),
+      label: ` quedan ${timeLeft} minutos`,
+      icon: ICONS.pause(timeAngle, 24, 9.09),
       ariaLabel: "play podcast",
     },
     [PODCAST_STATE.playing]: {
@@ -76,16 +83,12 @@ export default function PlayButton(props) {
       icon: ICONS.playing(),
     },
     [PODCAST_STATE.finished]: {
-      label: " Finalizado ",
+      label: " finalizado",
       icon: ICONS.finished(),
     },
   };
 
   return (
-    <Button
-      onClick={() => props.play()}
-      number={props.number}
-      {...buttonProps[props.state]}
-    />
+    <Button onClick={() => play()} number={number} {...buttonProps[state]} />
   );
 }

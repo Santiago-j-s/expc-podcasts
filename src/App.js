@@ -2,7 +2,7 @@
 import "./styles/main.scss";
 //import "./podcasts.css";
 import { podcasts as podcastsService } from "services/index";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Podcast from "components/Podcast/index";
 import Player from "components/Player/index";
 import { produce } from "immer";
@@ -11,6 +11,8 @@ import { PODCAST_STATE } from "constants/index";
 /** @typedef {import("services/index").Podcast} Podcast */
 /** @typedef {import("react").SetStateAction<Podcast[]>} SetStateActionPodcasts */
 /** @typedef {import("react").Dispatch<SetStateActionPodcasts>} DispatchPodcasts */
+
+const audio = new Audio();
 
 function App() {
   /** @type {[Podcast[], DispatchPodcasts]} */
@@ -23,7 +25,21 @@ function App() {
     });
   }, []);
 
-  const getPodcast = () => podcasts.find((p) => p.guid === selectedPodcast);
+  const getPodcast = useCallback(
+    () => podcasts.find((p) => p.guid === selectedPodcast),
+    [podcasts, selectedPodcast]
+  );
+
+  useEffect(() => {
+    const podcast = getPodcast();
+
+    if (!podcast) {
+      return;
+    }
+
+    audio.setAttribute("src", podcast.link.getAttribute("url"));
+    audio.play();
+  }, [selectedPodcast, podcasts, getPodcast]);
 
   /**
    * @param {Podcast[]} podcasts
