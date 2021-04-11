@@ -1,21 +1,13 @@
 // @ts-check
 import PlayButton from "components/PlayButton/index";
+import { PODCAST_STATE } from "../../constants";
 import "./style.css";
 
 /**
- * @param {{podcast: import("services/index").Podcast, index: number, playPodcast: Function}} props
+ * @param {{podcast: import("services/index").Podcast, index: number, handlers: import("App").Handlers }} props
  */
-export default function Podcast({ index, podcast, playPodcast }) {
-  const {
-    state,
-    time,
-    duration,
-    artwork,
-    guid,
-    date,
-    title,
-    description,
-  } = podcast;
+export default function Podcast({ index, podcast, handlers }) {
+  const { state, time, duration, artwork, date, title, description } = podcast;
 
   const timeLeft = duration - time;
   const timeAngle = (time / duration) * 360;
@@ -50,7 +42,11 @@ export default function Podcast({ index, podcast, playPodcast }) {
             <span className="ilo-button__label"> material docente </span>
           </button>
           <PlayButton
-            play={() => playPodcast(guid)}
+            play={() =>
+              state === PODCAST_STATE.playing
+                ? handlers.pause(podcast)
+                : handlers.play(podcast)
+            }
             number={index}
             state={state}
             duration={duration}

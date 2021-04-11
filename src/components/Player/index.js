@@ -6,10 +6,10 @@ import SvgPlay from "icons/play";
 import SvgPlayButtonPause from "icons/pause";
 
 /**
- * @param {{podcast: import("services/index").Podcast}} props
+ * @param {{podcast: import("services/index").Podcast, handlers: import("App").Handlers}} props
  * @returns
  */
-export default function Player({ podcast }) {
+export default function Player({ podcast, handlers }) {
   if (!podcast) return <div></div>;
   return (
     <div className="ilo-player">
@@ -26,12 +26,14 @@ export default function Player({ podcast }) {
         </div>
         <div className="ilo-player__actions">
           <button
+            onClick={() => handlers.backTen(podcast)}
             className="ilo-iconButton--brand--m"
             aria-label="retroceder 10 segundos"
           >
             <SvgBackTen aria-hidden="true" focusable="false" />
           </button>
           <button
+            onClick={() => handlers.play(podcast)}
             className="ilo-iconButton--brand--m"
             hidden={
               ![PODCAST_STATE.pause, PODCAST_STATE.stopped].includes(
@@ -43,15 +45,17 @@ export default function Player({ podcast }) {
             <SvgPlay aria-hidden="true" focusable="false" />
           </button>
           <button
+            onClick={() => handlers.pause(podcast)}
             className="ilo-iconButton--brand--m"
             hidden={[PODCAST_STATE.pause, PODCAST_STATE.stopped].includes(
               podcast.state
             )}
-            aria-label="play podcast"
+            aria-label="pause podcast"
           >
             <SvgPlayButtonPause aria-hidden="true" focusable="false" />
           </button>
           <button
+            onClick={() => handlers.nextTen(podcast)}
             className="ilo-iconButton--brand--m"
             aria-label="avanzar 10 segundos"
           >

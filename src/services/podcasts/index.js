@@ -33,10 +33,10 @@ function _extractPodcastInfo(item) {
 
   const duration = Math.round(Number.parseInt(seconds, 10) / 60);
 
-  const time = 15; // debería consultar la base de datos
+  const time = 0; // TODO: debería consultar la base de datos
 
   /** @type {?string} materialLink */
-  const materialLink = null; // debería consultar la base de datos
+  const materialLink = null; // TODO: debería consultar la base de datos
 
   const state = PODCAST_STATE.initial;
 
