@@ -1,6 +1,7 @@
 // @ts-check
 import { dayjs, xmlParse, htmlParse } from "utils/index";
 import { RSS_URL, PODCAST_STATE } from "constants/index";
+import links from "../../assets/materialLinks";
 
 /**
  * @param {Element} item
@@ -31,7 +32,7 @@ function _extractPodcastInfo(item) {
 
   let seconds = item?.querySelector("duration")?.innerHTML ?? "0";
 
-  const duration = Math.round(Number.parseInt(seconds, 10) / 60);
+  const duration = Number.parseInt(seconds, 10);
 
   const time = 0; // TODO: debería consultar la base de datos
 
@@ -68,5 +69,10 @@ export async function getAll() {
   const xml = xmlParse(xmlContent);
   const items = xml.querySelectorAll("item");
 
-  return Array.from(items).map(_extractPodcastInfo);
+  return Array.from(items)
+    .map(_extractPodcastInfo)
+    .map((p) => {
+      p.materialLink = links[p.guid];
+      return p;
+    });
 }

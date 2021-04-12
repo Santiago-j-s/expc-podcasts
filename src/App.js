@@ -1,19 +1,21 @@
 // @ts-check
 import "./styles/main.scss";
 import { podcasts as podcastsService } from "services/index";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Podcast from "components/Podcast/index";
 import Player from "components/Player/index";
 import { produce } from "immer";
 import { PODCAST_STATE } from "constants/index";
+import { useInterval } from "utils/index";
 
 /** @typedef {import("services/index").Podcast} Podcast */
 /**
  * @typedef {{
  *   play: (x: Podcast) => void,
- *   pause: (x: Podcast) => void,
- *   backTen: (x: Podcast) => void,
- *   nextTen: (x: Podcast) => void
+ *   pause: () => void,
+ *   backTen: () => void,
+ *   nextTen: () => void,
+ *   setTime: (time: number) => void
  * }} Handlers
  * */
 
@@ -26,14 +28,30 @@ function usePodcasts() {
   /** @type {[Podcast[], React.Dispatch<Podcast[]>]} */
   const [podcasts, setPodcasts] = useState([]);
 
-  /** @type {[Podcast, React.Dispatch<Podcast>]} */
-  const [selected, select] = useState(null);
+  /** @type {[string, React.Dispatch<string>]} */
+  const [selected, select] = useState("");
 
   useEffect(() => {
     podcastsService.getAll().then((podcasts) => {
       setPodcasts(podcasts);
     });
   }, []);
+
+  const getPodcast = useCallback(
+    /** @param {Podcast[]} podcasts */
+    (podcasts) => podcasts.find((p) => p.guid === selected),
+    [selected]
+  );
+
+  useInterval(() => {
+    setPodcasts(
+      produce(podcasts, (/** @type {Podcast[]} */ draft) => {
+        const podcast = getPodcast(draft);
+        if (podcast === undefined) return;
+        podcast.time = audio.currentTime;
+      })
+    );
+  }, 100);
 
   /** @type {Handlers} */
   const handlers = {
@@ -47,62 +65,53 @@ function usePodcasts() {
           selected.state = PODCAST_STATE.playing;
         })
       );
-      select(
-        produce(podcast, (draft) => {
-          draft.state = PODCAST_STATE.playing;
-        })
-      );
+      select(podcast.guid);
       audio.setAttribute("src", podcast.link.getAttribute("url"));
       audio.currentTime = podcast.time;
       audio.play();
     },
-    pause: (podcast) => {
+    pause: () => {
       setPodcasts(
-        produce(podcasts, (draft) => {
-          const selected = draft.find((p) => p.guid === podcast.guid);
+        produce(podcasts, (/** @type {Podcast[]} */ draft) => {
+          const selected = getPodcast(draft);
           selected.state = PODCAST_STATE.pause;
           selected.time = audio.currentTime;
         })
       );
-      select(
-        produce(podcast, (draft) => {
-          draft.state = PODCAST_STATE.pause;
-          draft.time = audio.currentTime;
-        })
-      );
       audio.pause();
     },
-    backTen: (podcast) => {
+    backTen: () => {
       setPodcasts(
-        produce(podcasts, (draft) => {
-          const selected = draft.find((p) => p.guid === podcast.guid);
-          audio.currentTime -= 10;
-          selected.time = audio.currentTime;
-        })
-      );
-      select(
-        produce(podcast, (draft) => {
-          draft.time = audio.currentTime;
+        produce(podcasts, (/** @type {Podcast[]} */ draft) => {
+          const selected = getPodcast(draft);
+          selected.time -= 10;
+          audio.currentTime = selected.time;
         })
       );
     },
-    nextTen: (podcast) => {
+    nextTen: () => {
       setPodcasts(
-        produce(podcasts, (draft) => {
-          const selected = draft.find((p) => p.guid === podcast.guid);
-          audio.currentTime += 10;
-          selected.time = audio.currentTime;
+        produce(podcasts, (/** @type {Podcast[]} */ draft) => {
+          const selected = getPodcast(draft);
+          selected.time += 10;
+          audio.currentTime = selected.time;
         })
       );
-      select(
-        produce(podcast, (draft) => {
-          draft.time = audio.currentTime;
+    },
+    setTime: (time) => {
+      setPodcasts(
+        produce(podcasts, (/** @type {Podcast[]} */ draft) => {
+          const selected = getPodcast(draft);
+          selected.time = time;
+          audio.currentTime = selected.time;
         })
       );
     },
   };
 
-  return [{ podcasts, selectedPodcast: selected }, handlers];
+  const selectedPodcast = getPodcast(podcasts);
+
+  return [{ podcasts, selectedPodcast }, handlers];
 }
 
 function App() {

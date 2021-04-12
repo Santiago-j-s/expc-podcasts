@@ -1,9 +1,9 @@
 // @ts-check
 import { PODCAST_STATE } from "constants/index";
-import Finished from "icons/PlayButton/finished";
-import Initial from "icons/PlayButton/initial";
-import Pause from "icons/PlayButton/pause";
-import Playing from "icons/PlayButton/playing";
+import Finished from "assets/icons/PlayButton/finished";
+import Initial from "assets/icons/PlayButton/initial";
+import Pause from "assets/icons/PlayButton/pause";
+import Playing from "assets/icons/PlayButton/playing";
 
 /** Object with the Icons from playButton */
 const ICONS = {
@@ -61,20 +61,23 @@ export default function PlayButton({
 }) {
   /** @typedef {{label: string, icon: JSX.Element, ariaLabel?: string}} ButtonProps */
 
+  const durationMinutes = Math.floor(duration / 60);
+  const timeLeftMinutes = Math.floor(timeLeft / 60);
+
   /** @type {Object<string, ButtonProps>} */
   const buttonProps = {
     [PODCAST_STATE.initial]: {
-      label: ` ${duration} minutos`,
+      label: ` ${durationMinutes} minutos`,
       icon: ICONS.initial(),
       ariaLabel: "play podcast",
     },
     [PODCAST_STATE.pause]: {
-      label: ` quedan ${timeLeft} minutos`,
+      label: ` quedan ${timeLeftMinutes} minutos`,
       icon: ICONS.pause(timeAngle, 24, 9.09),
       ariaLabel: "play podcast",
     },
     [PODCAST_STATE.stopped]: {
-      label: ` quedan ${timeLeft} minutos`,
+      label: ` quedan ${timeLeftMinutes} minutos`,
       icon: ICONS.pause(timeAngle, 24, 9.09),
       ariaLabel: "play podcast",
     },

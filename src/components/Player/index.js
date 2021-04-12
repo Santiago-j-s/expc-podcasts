@@ -1,10 +1,10 @@
 // @ts-check
 import { PODCAST_STATE } from "../../constants";
-import SvgBackTen from "icons/backTen";
-import SvgForwardTen from "icons/forwardTen";
-import SvgPlay from "icons/play";
-import SvgPlayButtonPause from "icons/pause";
-
+import SvgBackTen from "assets/icons/backTen";
+import SvgForwardTen from "assets/icons/forwardTen";
+import SvgPlay from "assets/icons/play";
+import SvgPlayButtonPause from "assets/icons/pause";
+import { Slider } from "@material-ui/core";
 /**
  * @param {{podcast: import("services/index").Podcast, handlers: import("App").Handlers}} props
  * @returns
@@ -13,7 +13,17 @@ export default function Player({ podcast, handlers }) {
   if (!podcast) return <div></div>;
   return (
     <div className="ilo-player">
-      <div className="ilo-player__slider" />
+      <div className="ilo-player__slider">
+        <Slider
+          value={podcast.time}
+          min={0}
+          max={podcast.duration}
+          onChange={(_event, /** @type {number} */ value) =>
+            handlers.setTime(value)
+          }
+          aria-labelledby="continuous-slider"
+        />
+      </div>
       <div className="ilo-player__main">
         <div className="ilo-player__details">
           <div className="ilo-player__artworkContainer">
@@ -26,7 +36,7 @@ export default function Player({ podcast, handlers }) {
         </div>
         <div className="ilo-player__actions">
           <button
-            onClick={() => handlers.backTen(podcast)}
+            onClick={() => handlers.backTen()}
             className="ilo-iconButton--brand--m"
             aria-label="retroceder 10 segundos"
           >
@@ -45,7 +55,7 @@ export default function Player({ podcast, handlers }) {
             <SvgPlay aria-hidden="true" focusable="false" />
           </button>
           <button
-            onClick={() => handlers.pause(podcast)}
+            onClick={() => handlers.pause()}
             className="ilo-iconButton--brand--m"
             hidden={[PODCAST_STATE.pause, PODCAST_STATE.stopped].includes(
               podcast.state
@@ -55,7 +65,7 @@ export default function Player({ podcast, handlers }) {
             <SvgPlayButtonPause aria-hidden="true" focusable="false" />
           </button>
           <button
-            onClick={() => handlers.nextTen(podcast)}
+            onClick={() => handlers.nextTen()}
             className="ilo-iconButton--brand--m"
             aria-label="avanzar 10 segundos"
           >
