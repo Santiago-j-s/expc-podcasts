@@ -1,7 +1,7 @@
 // @ts-check
 import { dayjs, xmlParse, htmlParse } from "utils/index";
 import { RSS_URL, PODCAST_STATE } from "constants/index";
-import links from "../../assets/materialLinks";
+import links from "../../assets/materialLinks.json";
 
 /**
  * @param {Element} item
