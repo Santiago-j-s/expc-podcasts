@@ -59,7 +59,13 @@ function usePodcasts() {
       setPodcasts(
         produce(podcasts, (draft) => {
           draft.forEach((p) => {
-            p.state = PODCAST_STATE.initial;
+            switch (p.state) {
+              case PODCAST_STATE.initial:
+                p.state = PODCAST_STATE.initial;
+                break;
+              default:
+                p.state = PODCAST_STATE.pause;
+            }
           });
           const selected = draft.find((p) => p.guid === podcast.guid);
           selected.state = PODCAST_STATE.playing;
