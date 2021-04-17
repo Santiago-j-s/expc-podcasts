@@ -11,13 +11,19 @@ import { Slider } from "@material-ui/core";
  */
 export default function Player({ podcast, handlers }) {
   if (!podcast) return <div></div>;
+
+  const { state, time, duration, artwork, title } = podcast;
+
+  const timeLeft = duration - time;
+  const timeLeftMinutes = Math.floor(timeLeft / 60);
+
   return (
     <div className="ilo-player">
       <div className="ilo-player__slider">
         <Slider
-          value={podcast.time}
+          value={time}
           min={0}
-          max={podcast.duration}
+          max={duration}
           onChange={(_event, /** @type {number} */ value) =>
             handlers.setTime(value)
           }
@@ -27,11 +33,13 @@ export default function Player({ podcast, handlers }) {
       <div className="ilo-player__main">
         <div className="ilo-player__details">
           <div className="ilo-player__artworkContainer">
-            <img className="ilo-player__artwork" src={podcast.artwork} alt="" />
+            <img className="ilo-player__artwork" src={artwork} alt="" />
           </div>
           <div className="ilo-player__text">
-            <h3 className="ilo-player__title">{podcast.title}</h3>
-            <p className="ilo-player__restTime">32min restantes</p>
+            <h3 className="ilo-player__title">{title}</h3>
+            <p className="ilo-player__restTime">
+              {timeLeftMinutes} min restantes
+            </p>
           </div>
         </div>
         <div className="ilo-player__actions">
@@ -46,9 +54,7 @@ export default function Player({ podcast, handlers }) {
             onClick={() => handlers.play(podcast)}
             className="ilo-iconButton--brand--m"
             hidden={
-              ![PODCAST_STATE.pause, PODCAST_STATE.stopped].includes(
-                podcast.state
-              )
+              ![PODCAST_STATE.pause, PODCAST_STATE.stopped].includes(state)
             }
             aria-label="play podcast"
           >
@@ -58,7 +64,7 @@ export default function Player({ podcast, handlers }) {
             onClick={() => handlers.pause()}
             className="ilo-iconButton--brand--m"
             hidden={[PODCAST_STATE.pause, PODCAST_STATE.stopped].includes(
-              podcast.state
+              state
             )}
             aria-label="pause podcast"
           >

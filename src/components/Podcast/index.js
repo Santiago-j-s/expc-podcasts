@@ -1,5 +1,4 @@
 // @ts-check
-import { Button } from "@material-ui/core";
 import PlayButton from "components/PlayButton/index";
 import { PODCAST_STATE } from "../../constants";
 import "./style.css";

@@ -37,7 +37,7 @@ function _extractPodcastInfo(item) {
   const time = 0; // TODO: debería consultar la base de datos
 
   /** @type {?string} materialLink */
-  const materialLink = null; // TODO: debería consultar la base de datos
+  const materialLink = null;
 
   const state = PODCAST_STATE.initial;
 
