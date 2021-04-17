@@ -55,7 +55,7 @@ function usePodcasts() {
 
   /** @type {Handlers} */
   const handlers = {
-    play: (podcast) => {
+    play: async (podcast) => {
       setPodcasts(
         produce(podcasts, (draft) => {
           draft.forEach((p) => {
@@ -68,7 +68,11 @@ function usePodcasts() {
       select(podcast.guid);
       audio.setAttribute("src", podcast.link.getAttribute("url"));
       audio.currentTime = podcast.time;
-      audio.play();
+      try {
+        await audio.play();
+      } catch (e) {
+        console.warn(e);
+      }
     },
     pause: () => {
       setPodcasts(
