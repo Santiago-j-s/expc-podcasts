@@ -1,9 +1,9 @@
 // @ts-check
-import { PODCAST_STATE } from "constants/index";
-import Finished from "assets/icons/PlayButton/finished";
-import Initial from "assets/icons/PlayButton/initial";
-import Pause from "assets/icons/PlayButton/pause";
-import Playing from "assets/icons/PlayButton/playing";
+import { PODCAST_STATE } from "~/constants/index";
+import Finished from "~/assets/icons/PlayButton/finished";
+import Initial from "~/assets/icons/PlayButton/initial";
+import Pause from "~/assets/icons/PlayButton/pause";
+import Playing from "~/assets/icons/PlayButton/playing";
 
 /** Object with the Icons from playButton */
 const ICONS = {

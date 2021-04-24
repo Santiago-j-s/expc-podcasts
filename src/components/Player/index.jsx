@@ -1,9 +1,9 @@
 // @ts-check
-import { PODCAST_STATE } from "../../constants";
-import SvgBackTen from "assets/icons/backTen";
-import SvgForwardTen from "assets/icons/forwardTen";
-import SvgPlay from "assets/icons/play";
-import SvgPlayButtonPause from "assets/icons/pause";
+import { PODCAST_STATE } from "~/constants";
+import SvgBackTen from "~/assets/icons/backTen";
+import SvgForwardTen from "~/assets/icons/forwardTen";
+import SvgPlay from "~/assets/icons/play";
+import SvgPlayButtonPause from "~/assets/icons/pause";
 import { Slider } from "@material-ui/core";
 /**
  * @param {{podcast: import("services/index").Podcast, handlers: import("App").Handlers}} props

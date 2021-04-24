@@ -1,12 +1,12 @@
 // @ts-check
 import "./styles/main.scss";
-import { podcasts as podcastsService } from "services/index";
-import React, { useCallback, useEffect, useState } from "react";
-import Podcast from "components/Podcast/index";
-import Player from "components/Player/index";
+import { podcasts as podcastsService } from "~/services/index";
+import { useCallback, useEffect, useState } from "react";
+import Podcast from "~/components/Podcast/index";
+import Player from "~/components/Player/index";
 import { produce } from "immer";
-import { PODCAST_STATE } from "constants/index";
-import { useInterval } from "utils/index";
+import { PODCAST_STATE } from "~/constants/index";
+import { useInterval } from "~/utils/index";
 
 /** @typedef {import("services/index").Podcast} Podcast */
 /**

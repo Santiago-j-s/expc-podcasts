@@ -1,4 +1,4 @@
-import ArcIcon from "components/ArcIcon/index";
+import ArcIcon from "~/components/ArcIcon/index";
 
 /**
  * @typedef {Object} PauseProps
